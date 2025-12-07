@@ -105,6 +105,32 @@ From analysis of ~130M log lines:
 - Recreated blocks are 28.8x hotter than permanently-gone blocks
 - High variance across PIDs (0% to 71% recreation rate)
 
+## Sample Output
+
+### 2D Heatmaps (Age × Hot → Recreation Rate)
+
+![Address-based 2D Heatmap](heatmap_2d_address_based.png)
+
+![Event-based 2D Heatmap](heatmap_2d_event_based.png)
+
+![Heatmap Comparison](heatmap_2d_comparison.png)
+
+### Tick/Age Analysis
+
+![Tick Age Visualization](tick_age_visualization.png)
+
+![Recreation Rate Comparison](tick_age_rate_comparison.png)
+
+![Age CDF](tick_age_cdf.png)
+
+### LRU vs LFU Conflict Analysis
+
+![LRU-LFU Conflict](lru_lfu_conflict.png)
+
+### Purge Event Distribution
+
+![Purge Event Distribution](purge_event_distribution.png)
+
 ## Dependencies
 
 - Python 3
