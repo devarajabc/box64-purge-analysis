@@ -1,0 +1,26 @@
+# Log files (large, not needed in repo)
+*.log
+
+# Generated output files
+*.csv
+*.png
+*.txt
+!README.txt
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
