@@ -48,12 +48,42 @@ python3 visualize_purge_events.py
 
 Scripts parse Box64 purge logs with naming pattern: `box64_purge_<PID>.log`
 
-Expected log line formats:
+### Log Structure
+
 ```
-[PURGE SUCCESS] ... x64_addr=0x... hot=N last_used_tick=N current_age=N
-[PURGE BLOCKED] ... x64_addr=0x... hot=N (in_used > 0)
-[PURGE SKIP] ... x64_addr=0x... hot=N (age < threshold)
+# Box64 Dynarec Purge Log
+# Format: [EVENT_TYPE] details...
+# EVENT_TYPE: PURGE SUCCESS, PURGE BLOCKED, PURGE SKIP
 ```
+
+### Event Types
+
+**PURGE SUCCESS** - Block was successfully purged (evicted from cache):
+```
+[PURGE SUCCESS] Purging old block 0xffffb1a200c0 (x64_addr=0x6fffff57e670, hot=1, last_used_tick=1410, current_age=2155, min_age_required=1024)
+```
+
+**PURGE BLOCKED** - Block cannot be purged (currently in use):
+```
+[PURGE BLOCKED] Can't purge block 0xffffb1a20770 (x64_addr=0x6fffff57e580, hot=1, in_used=1, last_used_tick=1411, current_age=2154, min_age_required=1024)
+```
+
+**PURGE SKIP** - Block skipped (too young, age < threshold):
+```
+[PURGE SKIP] Block too young 0xffffaafdc160 (x64_addr=0x7fff0000b7b8, hot=1, in_used=0, last_used_tick=23, current_age=179, min_age_required=1024)
+```
+
+### Field Descriptions
+
+| Field | Description |
+|-------|-------------|
+| `0xffffb1a200c0` | ARM64 block address (internal dynarec pointer) |
+| `x64_addr` | Original x86_64 instruction address being emulated |
+| `hot` | Execution count - how many times this block has been executed |
+| `in_used` | 1 if block is currently being executed, 0 otherwise |
+| `last_used_tick` | Global tick counter when block was last executed |
+| `current_age` | `current_tick - last_used_tick` (how stale the block is) |
+| `min_age_required` | Threshold age required for purging (default: 1024) |
 
 ## Analysis Modes
 
